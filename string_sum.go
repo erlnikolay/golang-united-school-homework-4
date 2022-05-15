@@ -1,5 +1,7 @@
 package string_sum
 
+//package main
+
 import (
 	"errors"
 	"fmt"
@@ -15,7 +17,7 @@ var (
 	errorNotTwoOperands = errors.New("expecting two operands, but received more or less")
 	// Use when the expression has at least one whitespace character
 	errorHasSpaceChar = errors.New("input has at least one whitespace character")
-	// OPerand is not number
+	// Operand is not number
 	errorIsNotNumber = errors.New("Operand is not number")
 )
 
@@ -38,8 +40,16 @@ func countOfOperand(input string) (err error) {
 	modifyOperations = strings.ReplaceAll(modifyOperations, "-", "#")
 	//fmt.Println(modifyOperations)
 	//fmt.Println(strings.Count(modifyOperations, "#"))
-	if strings.Count(modifyOperations, "#") > 1 || strings.Count(modifyOperations, "#") < 1 {
+	if strings.Count(modifyOperations, "#") > 1 {
 		return fmt.Errorf("%v", errorNotTwoOperands)
+	} else if strings.Count(modifyOperations, "#") < 1 {
+		_, err = strconv.Atoi(string([]rune(modifyOperations)))
+		if err != nil {
+			//err = errorIsNotNumber
+			return fmt.Errorf("%v", errorIsNotNumber)
+		} else {
+			return fmt.Errorf("%v", errorNotTwoOperands)
+		}
 	} else {
 		return nil
 	}
@@ -137,7 +147,7 @@ func StringSum(input string) (output string, err error) {
 //	var res string
 //	var err error
 //
-//	res, err = StringSum("+10-7")
+//	res, err = StringSum("10")
 //	fmt.Printf("Common result is %s\n", res)
 //	if err != nil {
 //		fmt.Printf("error: %s\n", err)
