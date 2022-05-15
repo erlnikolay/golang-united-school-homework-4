@@ -31,6 +31,19 @@ var (
 // with fmt.Errorf function
 //
 // Use the errors defined above as described, again wrapping into fmt.Errorf
+func countOfOperand(input string) (err error) {
+	var modifyOperations string
+	//fmt.Println(input)
+	modifyOperations = strings.ReplaceAll(input, "+", "#")
+	modifyOperations = strings.ReplaceAll(modifyOperations, "-", "#")
+	//fmt.Println(modifyOperations)
+	//fmt.Println(strings.Count(modifyOperations, "#"))
+	if strings.Count(modifyOperations, "#") > 1 || strings.Count(modifyOperations, "#") < 1 {
+		return fmt.Errorf("%v", errorNotTwoOperands)
+	} else {
+		return nil
+	}
+}
 
 func StringSum(input string) (output string, err error) {
 	var operandOne int
@@ -58,12 +71,9 @@ func StringSum(input string) (output string, err error) {
 		input = string([]rune(input)[1:])
 		firstMinusTrigger = true
 	}
-	// more than two operand
-	var modifyOperations string
-	modifyOperations = strings.ReplaceAll(input, "+", "#")
-	modifyOperations = strings.ReplaceAll(modifyOperations, "-", "#")
-	if strings.Count(modifyOperations, "#") > 1 {
-		return "", fmt.Errorf("%v", errorNotTwoOperands)
+	rErr := countOfOperand(input)
+	if rErr != nil {
+		return "", rErr
 	}
 	// take operators
 	operationTrigger = false
@@ -97,8 +107,6 @@ func StringSum(input string) (output string, err error) {
 			return "", fmt.Errorf("%v", errorIsNotNumber)
 		}
 		operationTrigger = true
-	} else { // less than two operand
-		return "", fmt.Errorf("%v", errorNotTwoOperands)
 	}
 	//fmt.Println("operations: ")
 	//fmt.Printf("first symbol operation trigger: %b\n", firstMinusTrigger)
@@ -129,7 +137,7 @@ func StringSum(input string) (output string, err error) {
 //	var res string
 //	var err error
 //
-//	res, err = StringSum("-10-5")
+//	res, err = StringSum("+10-7")
 //	fmt.Printf("Common result is %s\n", res)
 //	if err != nil {
 //		fmt.Printf("error: %s\n", err)
