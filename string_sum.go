@@ -58,20 +58,27 @@ func countOfOperand(input string) (err error) {
 func StringSum(input string) (output string, err error) {
 	var operandOne int
 	var operandTwo int
-	var calcResult int = 0
+	var calcResult int
 	var firstMinusTrigger bool // false - plus, true - minus
 	var operationTrigger bool  // false - plus, true - minus
 	//fmt.Println(input)
+	if len(input) == 1 && strings.Index(input, " ") == 0 {
+		return "", fmt.Errorf("%v", errorHasSpaceChar)
+	}
+	// delete all whitespace
+	input = strings.ReplaceAll(input, " ", "")
+	input = strings.ReplaceAll(input, "\\", "")
+	input = strings.ReplaceAll(input, "\"", "")
+	input = strings.ReplaceAll(input, "/", "")
 	if len(input) == 0 {
-		output = ""
 		//err = errorEmptyInput
-		return output, fmt.Errorf("%v", errorEmptyInput)
+		return "", fmt.Errorf("%v", errorEmptyInput)
 	}
-	if strings.Index(input, " ") >= 0 {
-		output = ""
-		//err = errorHasSpaceChar
-		return output, fmt.Errorf("%v", errorHasSpaceChar)
-	}
+	//if strings.Index(input, " ") >= 0 {
+	//	output = ""
+	//	//err = errorHasSpaceChar
+	//	return output, fmt.Errorf("%v", errorHasSpaceChar)
+	//}
 	// detele first plus from string
 	firstMinusTrigger = false
 	if len(input) != 0 && strings.Index(input, "+") == 0 {
@@ -135,19 +142,14 @@ func StringSum(input string) (output string, err error) {
 		}
 	}
 	//fmt.Printf("result: %d\n", calcResult)
-	if calcResult != 0 {
-		return strconv.Itoa(calcResult), nil
-	} else {
-		//err = errorEmptyInput
-		return "", fmt.Errorf("%v", errorEmptyInput)
-	}
+	return strconv.Itoa(calcResult), nil
 }
 
 //func main() {
 //	var res string
 //	var err error
 //
-//	res, err = StringSum("10")
+//	res, err = StringSum("10-10")
 //	fmt.Printf("Common result is %s\n", res)
 //	if err != nil {
 //		fmt.Printf("error: %s\n", err)
