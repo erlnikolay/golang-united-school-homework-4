@@ -2,6 +2,7 @@ package string_sum
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -40,13 +41,13 @@ func StringSum(input string) (output string, err error) {
 	//fmt.Println(input)
 	if len(input) == 0 {
 		output = ""
-		err = errorEmptyInput
-		return output, err
+		//err = errorEmptyInput
+		return output, fmt.Errorf("%v", errorEmptyInput)
 	}
 	if strings.Index(input, " ") >= 0 {
 		output = ""
-		err = errorHasSpaceChar
-		return output, err
+		//err = errorHasSpaceChar
+		return output, fmt.Errorf("%v", errorHasSpaceChar)
 	}
 	// detele first plus from string
 	firstMinusTrigger = false
@@ -66,27 +67,27 @@ func StringSum(input string) (output string, err error) {
 		operandOne, err = strconv.Atoi(string([]rune(input)[:indexOfOperation]))
 		//fmt.Println(operandOne)
 		if err != nil {
-			err = errorIsNotNumber
-			return "", err
+			//err = errorIsNotNumber
+			return "", fmt.Errorf("%v", errorIsNotNumber)
 		}
 		operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
 		//fmt.Println(operandTwo)
 		if err != nil {
-			err = errorIsNotNumber
-			return "", err
+			//err = errorIsNotNumber
+			return "", fmt.Errorf("%v", errorIsNotNumber)
 		}
 	} else if strings.Index(input, "-") > 0 {
 		indexOfOperation = strings.Index(input, "-")
 		//fmt.Println(indexOfOperation)
 		operandOne, err = strconv.Atoi(string([]rune(input)[:indexOfOperation]))
 		if err != nil {
-			err = errorIsNotNumber
-			return "", err
+			//err = errorIsNotNumber
+			return "", fmt.Errorf("%v", errorIsNotNumber)
 		}
 		operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
 		if err != nil {
-			err = errorIsNotNumber
-			return "", err
+			//err = errorIsNotNumber
+			return "", fmt.Errorf("%v", errorIsNotNumber)
 		}
 		operationTrigger = true
 	}
@@ -110,8 +111,8 @@ func StringSum(input string) (output string, err error) {
 	if calcResult != 0 {
 		return strconv.Itoa(calcResult), nil
 	} else {
-		err = errorEmptyInput
-		return "", err
+		//err = errorEmptyInput
+		return "", fmt.Errorf("%v", errorEmptyInput)
 	}
 }
 
