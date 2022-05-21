@@ -41,7 +41,7 @@ func countOfOperand(input string) (err error) {
 	//fmt.Println(modifyOperations)
 	//fmt.Println(strings.Count(modifyOperations, "#"))
 	if strings.Count(modifyOperations, "#") > 1 {
-		return fmt.Errorf("%e", errorNotTwoOperands)
+		return fmt.Errorf("%w", errorNotTwoOperands)
 	} else if strings.Count(modifyOperations, "#") < 1 {
 		_, err = strconv.Atoi(string([]rune(modifyOperations)))
 		if err != nil {
@@ -102,7 +102,7 @@ func StringSum(input string) (output string, err error) {
 		//fmt.Println(operandOne)
 		if err != nil {
 			//err = errorIsNotNumber
-			return "", fmt.Errorf("%v", errorIsNotNumber)
+			return "", fmt.Errorf("%w", errorIsNotNumber)
 		}
 		operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
 		//fmt.Println(operandTwo)
