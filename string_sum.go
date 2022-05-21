@@ -80,7 +80,7 @@ func StringSum(input string) (output string, err error) {
 		_, err = strconv.Atoi(string([]rune(modifyOperations)))
 		if err != nil {
 			//err = errorIsNotNumber
-			return "", fmt.Errorf("%w", errorIsNotNumber)
+			return "", fmt.Errorf("%w", err)
 		} else {
 			return "", fmt.Errorf("%w", errorNotTwoOperands)
 		}
@@ -95,13 +95,15 @@ func StringSum(input string) (output string, err error) {
 			//fmt.Println(operandOne)
 			if err != nil {
 				//err = errorIsNotNumber
-				return "", fmt.Errorf("%w", errorIsNotNumber)
+				//return "", fmt.Errorf("%w", errorIsNotNumber)
+				return "", fmt.Errorf("%w", err)
 			}
 			operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
 			//fmt.Println(operandTwo)
 			if err != nil {
 				//err = errorIsNotNumber
-				return "", fmt.Errorf("%w", errorIsNotNumber)
+				//return "", fmt.Errorf("%w", errorIsNotNumber)
+				return "", fmt.Errorf("%w", err)
 			}
 		} else if strings.Index(input, "-") > 0 {
 			indexOfOperation = strings.Index(input, "-")
@@ -109,12 +111,12 @@ func StringSum(input string) (output string, err error) {
 			operandOne, err = strconv.Atoi(string([]rune(input)[:indexOfOperation]))
 			if err != nil {
 				//err = errorIsNotNumber
-				return "", fmt.Errorf("%w", errorIsNotNumber)
+				return "", fmt.Errorf("%w", err)
 			}
 			operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
 			if err != nil {
 				//err = errorIsNotNumber
-				return "", fmt.Errorf("%w", errorIsNotNumber)
+				return "", fmt.Errorf("%w", err)
 			}
 			operationTrigger = true
 		}
@@ -143,7 +145,7 @@ func StringSum(input string) (output string, err error) {
 //	var res string
 //	var err error
 //
-//	res, err = StringSum("-10-3+45")
+//	res, err = StringSum("-10-123")
 //	fmt.Printf("Common result is %s\n", res)
 //	if err != nil {
 //		fmt.Printf("error: %s\n", err)
