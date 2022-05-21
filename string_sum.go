@@ -41,14 +41,14 @@ func countOfOperand(input string) (err error) {
 	//fmt.Println(modifyOperations)
 	//fmt.Println(strings.Count(modifyOperations, "#"))
 	if strings.Count(modifyOperations, "#") > 1 {
-		return fmt.Errorf("%v", errorNotTwoOperands)
+		return fmt.Errorf("%e", errorNotTwoOperands)
 	} else if strings.Count(modifyOperations, "#") < 1 {
 		_, err = strconv.Atoi(string([]rune(modifyOperations)))
 		if err != nil {
 			//err = errorIsNotNumber
-			return fmt.Errorf("%v", errorIsNotNumber)
+			return fmt.Errorf("%w", errorIsNotNumber)
 		} else {
-			return fmt.Errorf("%v", errorNotTwoOperands)
+			return fmt.Errorf("%w", errorNotTwoOperands)
 		}
 	} else {
 		return nil
@@ -63,7 +63,7 @@ func StringSum(input string) (output string, err error) {
 	var operationTrigger bool  // false - plus, true - minus
 	//fmt.Println(input)
 	if len(input) == 1 && strings.Index(input, " ") == 0 {
-		return "", fmt.Errorf("%v", errorHasSpaceChar)
+		return "", fmt.Errorf("%w", errorHasSpaceChar)
 	}
 	// delete all whitespace
 	input = strings.ReplaceAll(input, " ", "")
@@ -72,7 +72,7 @@ func StringSum(input string) (output string, err error) {
 	input = strings.ReplaceAll(input, "/", "")
 	if len(input) == 0 {
 		//err = errorEmptyInput
-		return "", fmt.Errorf("%v", errorEmptyInput)
+		return "", fmt.Errorf("%w", errorEmptyInput)
 	}
 	//if strings.Index(input, " ") >= 0 {
 	//	output = ""
@@ -108,7 +108,7 @@ func StringSum(input string) (output string, err error) {
 		//fmt.Println(operandTwo)
 		if err != nil {
 			//err = errorIsNotNumber
-			return "", fmt.Errorf("%v", errorIsNotNumber)
+			return "", fmt.Errorf("%w", errorIsNotNumber)
 		}
 	} else if strings.Index(input, "-") > 0 {
 		indexOfOperation = strings.Index(input, "-")
@@ -116,12 +116,12 @@ func StringSum(input string) (output string, err error) {
 		operandOne, err = strconv.Atoi(string([]rune(input)[:indexOfOperation]))
 		if err != nil {
 			//err = errorIsNotNumber
-			return "", fmt.Errorf("%v", errorIsNotNumber)
+			return "", fmt.Errorf("%w", errorIsNotNumber)
 		}
 		operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
 		if err != nil {
 			//err = errorIsNotNumber
-			return "", fmt.Errorf("%v", errorIsNotNumber)
+			return "", fmt.Errorf("%w", errorIsNotNumber)
 		}
 		operationTrigger = true
 	}
