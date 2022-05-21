@@ -33,27 +33,6 @@ var (
 // with fmt.Errorf function
 //
 // Use the errors defined above as described, again wrapping into fmt.Errorf
-func countOfOperand(input string) (err error) {
-	var modifyOperations string
-	//fmt.Println(input)
-	modifyOperations = strings.ReplaceAll(input, "+", "#")
-	modifyOperations = strings.ReplaceAll(modifyOperations, "-", "#")
-	//fmt.Println(modifyOperations)
-	//fmt.Println(strings.Count(modifyOperations, "#"))
-	if strings.Count(modifyOperations, "#") > 1 {
-		return fmt.Errorf("%w", errorNotTwoOperands)
-	} else if strings.Count(modifyOperations, "#") < 1 {
-		_, err = strconv.Atoi(string([]rune(modifyOperations)))
-		if err != nil {
-			//err = errorIsNotNumber
-			return fmt.Errorf("%w", errorIsNotNumber)
-		} else {
-			return fmt.Errorf("%w", errorNotTwoOperands)
-		}
-	} else {
-		return nil
-	}
-}
 
 func StringSum(input string) (output string, err error) {
 	var operandOne int
@@ -88,68 +67,83 @@ func StringSum(input string) (output string, err error) {
 		input = string([]rune(input)[1:])
 		firstMinusTrigger = true
 	}
-	rErr := countOfOperand(input)
-	if rErr != nil {
-		return "", rErr
+
+	var modifyOperations string
+	//fmt.Println(input)
+	modifyOperations = strings.ReplaceAll(input, "+", "#")
+	modifyOperations = strings.ReplaceAll(modifyOperations, "-", "#")
+	//fmt.Println(modifyOperations)
+	//fmt.Println(strings.Count(modifyOperations, "#"))
+	if strings.Count(modifyOperations, "#") > 1 {
+		return "", fmt.Errorf("%w", errorNotTwoOperands)
+	} else if strings.Count(modifyOperations, "#") < 1 {
+		_, err = strconv.Atoi(string([]rune(modifyOperations)))
+		if err != nil {
+			//err = errorIsNotNumber
+			return "", fmt.Errorf("%w", errorIsNotNumber)
+		} else {
+			return "", fmt.Errorf("%w", errorNotTwoOperands)
+		}
+	} else {
+		// take operators
+		operationTrigger = false
+		var indexOfOperation int
+		if strings.Index(input, "+") > 0 {
+			indexOfOperation = strings.Index(input, "+")
+			//fmt.Println(indexOfOperation)
+			operandOne, err = strconv.Atoi(string([]rune(input)[:indexOfOperation]))
+			//fmt.Println(operandOne)
+			if err != nil {
+				//err = errorIsNotNumber
+				return "", fmt.Errorf("%w", errorIsNotNumber)
+			}
+			operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
+			//fmt.Println(operandTwo)
+			if err != nil {
+				//err = errorIsNotNumber
+				return "", fmt.Errorf("%w", errorIsNotNumber)
+			}
+		} else if strings.Index(input, "-") > 0 {
+			indexOfOperation = strings.Index(input, "-")
+			//fmt.Println(indexOfOperation)
+			operandOne, err = strconv.Atoi(string([]rune(input)[:indexOfOperation]))
+			if err != nil {
+				//err = errorIsNotNumber
+				return "", fmt.Errorf("%w", errorIsNotNumber)
+			}
+			operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
+			if err != nil {
+				//err = errorIsNotNumber
+				return "", fmt.Errorf("%w", errorIsNotNumber)
+			}
+			operationTrigger = true
+		}
+		//fmt.Println("operations: ")
+		//fmt.Printf("first symbol operation trigger: %b\n", firstMinusTrigger)
+		//fmt.Printf("operation trigger: %b\n", operationTrigger)
+		if firstMinusTrigger == true { // first minus
+			if operationTrigger == true { // operation minus
+				calcResult = -operandOne - operandTwo
+			} else { // operation plus
+				calcResult = -operandOne + operandTwo
+			}
+		} else { // first plus
+			if operationTrigger == true { // operation minus
+				calcResult = operandOne - operandTwo
+			} else { // opeartion plus
+				calcResult = operandOne + operandTwo
+			}
+		}
+		//fmt.Printf("result: %d\n", calcResult)
+		return strconv.Itoa(calcResult), nil
 	}
-	// take operators
-	operationTrigger = false
-	var indexOfOperation int
-	if strings.Index(input, "+") > 0 {
-		indexOfOperation = strings.Index(input, "+")
-		//fmt.Println(indexOfOperation)
-		operandOne, err = strconv.Atoi(string([]rune(input)[:indexOfOperation]))
-		//fmt.Println(operandOne)
-		if err != nil {
-			//err = errorIsNotNumber
-			return "", fmt.Errorf("%w", errorIsNotNumber)
-		}
-		operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
-		//fmt.Println(operandTwo)
-		if err != nil {
-			//err = errorIsNotNumber
-			return "", fmt.Errorf("%w", errorIsNotNumber)
-		}
-	} else if strings.Index(input, "-") > 0 {
-		indexOfOperation = strings.Index(input, "-")
-		//fmt.Println(indexOfOperation)
-		operandOne, err = strconv.Atoi(string([]rune(input)[:indexOfOperation]))
-		if err != nil {
-			//err = errorIsNotNumber
-			return "", fmt.Errorf("%w", errorIsNotNumber)
-		}
-		operandTwo, err = strconv.Atoi(string([]rune(input)[(indexOfOperation + 1):]))
-		if err != nil {
-			//err = errorIsNotNumber
-			return "", fmt.Errorf("%w", errorIsNotNumber)
-		}
-		operationTrigger = true
-	}
-	//fmt.Println("operations: ")
-	//fmt.Printf("first symbol operation trigger: %b\n", firstMinusTrigger)
-	//fmt.Printf("operation trigger: %b\n", operationTrigger)
-	if firstMinusTrigger == true { // first minus
-		if operationTrigger == true { // operation minus
-			calcResult = -operandOne - operandTwo
-		} else { // operation plus
-			calcResult = -operandOne + operandTwo
-		}
-	} else { // first plus
-		if operationTrigger == true { // operation minus
-			calcResult = operandOne - operandTwo
-		} else { // opeartion plus
-			calcResult = operandOne + operandTwo
-		}
-	}
-	//fmt.Printf("result: %d\n", calcResult)
-	return strconv.Itoa(calcResult), nil
 }
 
 //func main() {
 //	var res string
 //	var err error
 //
-//	res, err = StringSum("10-10")
+//	res, err = StringSum("-10-3+45")
 //	fmt.Printf("Common result is %s\n", res)
 //	if err != nil {
 //		fmt.Printf("error: %s\n", err)
